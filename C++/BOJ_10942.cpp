@@ -4,36 +4,30 @@ using namespace std;
 
 int N, M, I1, I2;
 
-int Board[2010]{ 0 };
+int Board[2001]{ 0 };
 
-int DP1[2010][2010]{ 0 };
+int DP[2001][2001]{ 0 };
 
-void Solution(int first, int second) // 재귀 시작 (DP) (-1 : 탐색을 안 한 부분, 0 : 탐색한 결과 팰린드롬 X, 1 : 탐색한 결과 팰린드롬 O)
+// ****다이나믹 프로그래밍은 뭐가 됐던, 탐색한 부분과 안 한 부분을 무조건 나눠야 한다.
+
+int Solution(int start, int end)
 {
-	if (DP1[first][second] != -1)
-		return;
+	int& ref = DP[start][end];
 
-	DP1[first][second] = 1;
+	if (ref != -1)
+		return ref;
 
-	if (first - 1 > 0 && second + 1 < N + 1)
-	{
-		if (Board[first - 1] == Board[second])
-			Solution(first - 1, second);
-		else
-			DP1[first - 1][second] = 0; // 왼쪽에서 넓혀가자
+	if (start > end)
+		return 1;
 
-		if (Board[first] == Board[second + 1])
-			Solution(first, second + 1);
-		else
-			DP1[first][second + 1] = 0; // 오른쪽에서 넓혀가자
+	if (start == end)
+		return ref = 1;
 
-		if (Board[first - 1] == Board[second + 1])
-			Solution(first - 1, second + 1);
-		else
-			DP1[first - 1][second + 1] = 0; // 왼쪽 + 오른쪽에서 넓혀가자
-	}
+	if (Board[start] != Board[end])
+		return ref = 0;
+
+	return ref = Solution(start + 1, end - 1);
 }
-
 
 int main()
 {
@@ -41,22 +35,24 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	memset(DP1, -1, sizeof(DP1));
-
 	cin >> N;
 	for (int i = 1; i <= N; i++)
 		cin >> Board[i];
 
+	memset(DP, -1, sizeof(DP));
+
 	for (int i = 1; i <= N; i++)
-		Solution(i, i);
+	{
+		for (int j = i; j <= N; j++)
+		{
+			DP[i][j] = Solution(i, j);
+		}
+	} // 브루트 포스 사용 (2000 * 2000 = 400만번이어서 0.5초를 초과할 것 같지만, DP 특징 때문에 걱정 안 해도 된다.)
 
 	cin >> M;
-	for (int i = 1; i <= M; i++)
+	for (int i = 0; i < M; i++)
 	{
 		cin >> I1 >> I2;
-		if (DP1[I1][I2] == 1)
-			cout << 1 << '\n';
-		else // 탐색을 안 한 부분도 전부 팰린드롬이 아니다.
-			cout << 0 << '\n';
+		cout << DP[I1][I2] << '\n';
 	}
 }
