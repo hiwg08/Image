@@ -28,7 +28,7 @@ ll Binary_Search()
 
 	while (lo + 1 < hi)
 	{
-		ll mid = (lo + hi) / 2;
+		ll mid = (lo + hi) >> 1;
 
 		CHK(mid) ? lo = mid : hi = mid;
 	}
