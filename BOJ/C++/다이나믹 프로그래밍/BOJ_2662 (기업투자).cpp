@@ -5,6 +5,9 @@ using namespace std;
 
 int N, M, Base[301]{ 0 }, Arr[301][21]{ 0 }, DP[301][301]{ 0 }, Ans[21][301]{ 0 };
 
+// Ans 배열의 의미 : 해당 위치(첫 번째 배열)에서 돈이 M만큼 남았을 때(두 번째 배열) 값어치가 최대가 될 수 있도록 투자할 수 있는 돈의 비용 (Ans의 값)
+// 이렇게 하면 역추적이 가능하다.
+
 int solve(int Money, int Idx)
 {
 	if (Idx == M)

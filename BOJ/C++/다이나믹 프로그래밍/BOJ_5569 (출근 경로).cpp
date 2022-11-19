@@ -8,6 +8,9 @@ int W, H, DP[101][101][2][2]{ 0 };
 int dx[]{ 1, 0 };
 int dy[]{ 0, 1 };
 
+// 이걸 DP로 풀 수 있는 이유는 DAG라서 그렇다.
+// 사이클이 도는 거라면 DP를 적용하기 어렵다.
+
 int solve(int x, int y, bool dir, int move)
 {
 	if (x >= W || y >= H)
